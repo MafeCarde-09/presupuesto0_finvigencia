@@ -1305,10 +1305,7 @@ with tabs[0]:
     )
     _bg_fallback_style = (
         "" if _BANNER_SDE_B64
-        else 'style="background:linear-gradient(135deg,#0a1628 0%,
-#0d2044 40%,
-#0f2e5a 70%,
-#1a3a6b 100%);"'
+        else 'style="background:linear-gradient(135deg,#0a1628 0%,0d2044 40%,0f2e5a 70%,1a3a6b 100%);"'
     )
 
     st.markdown(f"""
