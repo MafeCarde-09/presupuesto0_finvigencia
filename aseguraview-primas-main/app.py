@@ -28,8 +28,6 @@ except ModuleNotFoundError:
 from config import PAGE_TITLE, PAGE_ICON, LAYOUT, LEY_GARANTIAS_2026
 
 # Utils
-from utils.data_loader import load_data, load_cutoff_date
-from utils.data_processor import normalize_dataframe
 from utils.data_loader import load_data, load_cutoff_date, load_data_fuente2
 from utils.data_processor import normalize_dataframe, normalize_dataframe_fuente2
 from utils.formatters import fmt_cop, badge_pct_html, badge_growth_html
@@ -703,12 +701,14 @@ _BANNER_SDE_B64 = _img_to_b64("SDE_Primera_Pag.png")
 _LOGO_70_B64 = _img_to_b64("logo_70_anios.png")
 @st.cache_data(ttl=3600, show_spinner=False, max_entries=_DATA_CACHE_MAX_ENTRIES)
 def load_and_process_data():
-    """Carga y procesa datos con caché para reducir recargas y mejorar rendimiento."""
-    df_raw = load_data()
-    df_processed = normalize_dataframe(df_raw)
-    fecha_corte = load_cutoff_date()
-    return df_processed, fecha_corte
+    """Carga y procesa datos de ambas fuentes (sin apilar) con caché."""
+    df_processed = normalize_dataframe(load_data())
 
+    df_raw2 = load_data_fuente2()
+    df_processed2 = normalize_dataframe_fuente2(df_raw2) if not df_raw2.empty else pd.DataFrame()
+
+    fecha_corte = load_cutoff_date()
+    return df_processed, df_processed2, fecha_corte
 
 @st.cache_data(ttl=3600)
 def nowcast_cached(prod_parcial: float, fecha_corte: pd.Timestamp,
@@ -1133,7 +1133,7 @@ if not st.session_state["visit_counted"]:
     st.session_state["visit_count"] += 1
     st.session_state["visit_counted"] = True
 
-df, fecha_corte = load_and_process_data()
+df, df2, fecha_corte = load_and_process_data()
 
 # ==================== HEADER ====================
 _logo_70_tag = (
