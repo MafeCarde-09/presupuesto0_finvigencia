@@ -111,3 +111,33 @@ def normalize_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna(subset=['FECHA'])
     
     return df
+
+#---------------------------------------------------------------
+#         NORMALIZACIÓN FUENTE 2 - FECHA FIN VIGENCIA
+#---------------------------------------------------------------
+def normalize_dataframe_fuente2(df: pd.DataFrame) -> pd.DataFrame:
+    """Normaliza la nueva base (Año, Mes yyyy, Codigo y Sucursal, Linea, Imp Prima, Linea +)."""
+    df = df.copy()
+    df.columns = [c.strip() for c in df.columns]
+
+    rename_map = {
+        'Año': 'ANIO',
+        'Mes yyyy': 'MES_TXT',
+        'Codigo y Sucursal': 'SUCURSAL',
+        'Linea': 'LINEA',
+        'Linea +': 'LINEA_PLUS',
+        'Imp Prima': 'IMP_PRIMA',
+    }
+    df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
+    df = parse_dates(df)  
+    
+    if 'IMP_PRIMA' in df.columns:
+        df['IMP_PRIMA'] = parse_number_co(df['IMP_PRIMA'])
+
+    for col in ['SUCURSAL', 'LINEA', 'LINEA_PLUS']:
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+
+    df['FUENTE'] = 'fuente2'
+    df = df.dropna(subset=['FECHA'])
+    return df
