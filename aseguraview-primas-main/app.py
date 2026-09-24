@@ -30,6 +30,8 @@ from config import PAGE_TITLE, PAGE_ICON, LAYOUT, LEY_GARANTIAS_2026
 # Utils
 from utils.data_loader import load_data, load_cutoff_date
 from utils.data_processor import normalize_dataframe
+from utils.data_loader import load_data, load_cutoff_date, load_data_fuente2
+from utils.data_processor import normalize_dataframe, normalize_dataframe_fuente2
 from utils.formatters import fmt_cop, badge_pct_html, badge_growth_html
 from utils.date_utils import business_days_left
 from utils.distribution import (
