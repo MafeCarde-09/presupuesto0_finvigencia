@@ -1135,6 +1135,19 @@ if not st.session_state["visit_counted"]:
 
 df, df2, fecha_corte = load_and_process_data()
 
+###BORRAR
+with st.expander("🔍 DEBUG — Validar Fuente 2 (borrar después)"):
+    st.write(f"Filas cargadas: {len(df2)}")
+    st.write(f"Columnas: {list(df2.columns)}")
+    st.write("Tipos de dato:")
+    st.write(df2.dtypes)
+    st.write("Primeras filas:")
+    st.dataframe(df2.head(10))
+    st.write("Rango de fechas:")
+    if not df2.empty and 'FECHA' in df2.columns:
+        st.write(f"Desde {df2['FECHA'].min()} hasta {df2['FECHA'].max()}")
+    st.write(f"Suma total IMP_PRIMA: {df2['IMP_PRIMA'].sum() if 'IMP_PRIMA' in df2.columns else 'columna no existe'}")
+
 # ==================== HEADER ====================
 _logo_70_tag = (
     f'<img src="data:image/png;base64,{_LOGO_70_B64}" '
