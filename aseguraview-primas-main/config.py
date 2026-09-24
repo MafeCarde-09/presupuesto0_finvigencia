@@ -8,13 +8,20 @@ from dotenv import load_dotenv
 # Cargar variables de entorno
 load_dotenv()
 
-# ==================== GOOGLE SHEETS ====================
+# ==================== GOOGLE SHEETS FUENTE 1====================
 SHEET_ID = os.getenv(
     'GOOGLE_SHEET_ID', 
     '1ThVwW3IbkL7Dw_Vrs9heT1QMiHDZw1Aj-n0XNbDi9i8'
 )
 SHEET_NAME_DATOS = os.getenv('SHEET_NAME_DATOS', 'Hoja1')
 SHEET_NAME_FECHA_CORTE = os.getenv('SHEET_NAME_FECHA', 'Hoja2')
+
+# ==================== GOOGLE SHEETS FUENTE 2====================
+SHEET_ID_FUENTE2 = os.getenv(
+    'GOOGLE_SHEET_ID_FUENTE2', 
+    '1IRSLFcQ4msVZrU0L3CBhZMmClnV4V2VzWFIvQLrKzX4'
+)
+SHEET_NAME_DATOS_FUENTE2 = os.getenv('SHEET_NAME_DATOS_FUENTE2', 'Hoja1')
 
 # ==================== FORMATO DE FECHAS ====================
 DATE_FORMAT = '%d/%m/%Y'  # Formato colombiano: 1/1/2007
