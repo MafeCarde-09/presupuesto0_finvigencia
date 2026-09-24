@@ -76,6 +76,22 @@ def load_data(sheet_id: str = SHEET_ID,
         )
         st.stop()
 
+@st.cache_data(ttl=1800, show_spinner=False)
+def load_data_fuente2(sheet_id: str = SHEET_ID_FUENTE2,
+                       sheet_name: str = SHEET_NAME_DATOS_FUENTE2) -> pd.DataFrame:
+    url = gsheet_csv_url(sheet_id, sheet_name)
+    try:
+        df = pd.read_csv(url)
+        if df.empty:
+            st.warning(f"⚠️ {sheet_name} (fuente 2) está vacía.")
+            st.stop()
+        return df
+    except Exception as e:
+        st.error(
+            f"❌ Error cargando datos desde {sheet_name}: {e}\n\n"
+            "Intenta recargar la página en unos segundos."
+        )
+        st.stop()                       
 #--------------------------------------------------------
 #            FUENTE 2 - FECHA VIGENCIA
 #--------------------------------------------------------
