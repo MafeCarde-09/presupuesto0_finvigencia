@@ -5,7 +5,7 @@ Carga de datos desde Google Sheets
 import pandas as pd
 import streamlit as st
 from config import SHEET_ID, SHEET_NAME_DATOS, SHEET_NAME_FECHA_CORTE
-
+from config import SHEET_ID_FUENTE2, SHEET_NAME_DATOS_FUENTE2
 
 def gsheet_csv_url(sheet_id: str, sheet_name: str) -> str:
     """Genera URL para leer Google Sheet como CSV"""
@@ -75,3 +75,21 @@ def load_data(sheet_id: str = SHEET_ID,
             "Intenta recargar la página en unos segundos."
         )
         st.stop()
+
+#--------------------------------------------------------
+#            FUENTE 2 - FECHA VIGENCIA
+#--------------------------------------------------------
+@st.cache_data(ttl=1800, show_spinner=False)
+def load_data_fuente2(sheet_id: str = SHEET_ID_FUENTE2,
+                       sheet_name: str = SHEET_NAME_DATOS_FUENTE2) -> pd.DataFrame:
+    """Carga datos de la nueva base desde Google Sheets."""
+    url = gsheet_csv_url(sheet_id, sheet_name)
+    try:
+        df = pd.read_csv(url)
+        if df.empty:
+            st.warning(f"⚠️ {sheet_name} (fuente 2) está vacía.")
+            return pd.DataFrame()
+        return df
+    except Exception as e:
+        st.warning(f"⚠️ No se pudo cargar fuente 2 ({e}).")
+        return pd.DataFrame()
