@@ -1189,8 +1189,9 @@ df_filtered = df_filtered[df_filtered['FECHA'].dt.year <= filters['anio_analisis
 tabs = st.tabs(["🏠 Presentación", "📈 Primas", "🏛️ FIANZAS"])
 
 # ========== TAB 1: PRESENTACIÓN ==========
+
 with tabs[0]:
-    st.markdown("""
+    st.markdown(
     <style>
     .hero-section {
         position: relative;
@@ -1205,6 +1206,7 @@ with tabs[0]:
         justify-content: flex-end;
         background: #071428;
     }
+    
     .hero-bg {
         position: absolute;
         inset: 0;
@@ -1282,20 +1284,20 @@ with tabs[0]:
         margin-top: 16px;
     }
     </style>
-    """, unsafe_allow_html=True)
+    , unsafe_allow_html=True)
 
     visit_count = st.session_state.get("visit_count", 1)
 
     _bg_img_tag = (
         f'<img class="hero-bg" src="data:image/png;base64,{_BANNER_SDE_B64}" alt=""/>'
-        if _BANNER_SDE_B64 else ""
+        if _BANNER_SDE_B64 else
     )
     _bg_fallback_style = (
-        "" if _BANNER_SDE_B64
-        else 'style="background:linear-gradient(135deg,#0a1628 0%,#0d2044 40%,#0f2e5a 70%,#1a3a6b 100%);"'
+        if _BANNER_SDE_B64
+        else 'style="background:linear-gradient(135deg,#0a1628 0%,#0d2044 40%,#0f2e5a 70%,#1a3a6b 100%);
     )
 
-    st.markdown(f"""
+    st.markdown(f
     <div class="hero-section" {_bg_fallback_style}>
         {_bg_img_tag}
         <div class="hero-overlay"></div>
@@ -1316,7 +1318,7 @@ with tabs[0]:
             <div class="visit-badge">👁️ Visitas en esta sesión: {visit_count}</div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    , unsafe_allow_html=True)
 
 # ========== TAB 2: PRIMAS ==========
 with tabs[1]:
