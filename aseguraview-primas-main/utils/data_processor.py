@@ -2,6 +2,7 @@
 """
 Procesamiento y normalización de datos
 """
+import re
 import pandas as pd
 import numpy as np
 from config import DATE_PARSE_DAYFIRST
