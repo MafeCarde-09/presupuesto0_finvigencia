@@ -1172,6 +1172,7 @@ with st.expander("🔍 DEBUG — Validar Fuente 2 (borrar después)"):
     st.write(f"Suma total IMP_PRIMA: {df2['IMP_PRIMA'].sum() if 'IMP_PRIMA' in df2.columns else 'columna no existe'}")
 
 ###BORRAR
+"""
 with st.expander("🔍 DEBUG — Validar Fuente 1 (borrar después)"):
     st.write(f"Filas cargadas: {len(df)}")
     st.write(f"Columnas: {list(df.columns)}")
@@ -1183,7 +1184,7 @@ with st.expander("🔍 DEBUG — Validar Fuente 1 (borrar después)"):
     if not df.empty and 'FECHA' in df.columns:
         st.write(f"Desde {df['FECHA'].min()} hasta {df['FECHA'].max()}")
     st.write(f"Suma total IMP_PRIMA: {df['IMP_PRIMA'].sum() if 'IMP_PRIMA' in df2.columns else 'columna no existe'}")
-
+"""
 # ==================== SIDEBAR ====================
 filters = render_sidebar(df, fecha_corte)
 
