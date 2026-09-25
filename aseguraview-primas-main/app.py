@@ -1167,7 +1167,7 @@ with st.expander("🔍 DEBUG — Validar Fuente 2 (por etapas)"):
     st.dataframe(df_raw2_debug.head(5))
 
     st.write("### 2) Datos NORMALIZADOS (df2)")
-    st.expander("🔍 DEBUG — Validar Fuente 2"):
+    st.expander("🔍 DEBUG — Validar Fuente 2")
     st.write(f"Filas cargadas: {len(df2)}")
     st.write(f"Columnas: {list(df2.columns)}")
     st.dataframe(df2, use_container_width=True)
