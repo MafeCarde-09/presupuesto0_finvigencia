@@ -161,6 +161,7 @@ def normalize_dataframe_fuente2(df: pd.DataFrame) -> pd.DataFrame:
     }
     df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
     df = parse_dates(df)  
+    df['MES_TXT'] = df['FECHA'].dt.strftime('%-d/%-m/%Y')
     
     if 'IMP_PRIMA' in df.columns:
         df['IMP_PRIMA'] = parse_number_co(df['IMP_PRIMA'])
