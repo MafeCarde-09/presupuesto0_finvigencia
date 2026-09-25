@@ -1167,12 +1167,10 @@ with st.expander("🔍 DEBUG — Validar Fuente 2 (por etapas)"):
     st.dataframe(df_raw2_debug.head(5))
 
     st.write("### 2) Datos NORMALIZADOS (df2)")
-    st.write(f"Filas: {len(df2)}")
-    if not df_raw2_debug.empty:
-        st.write("Valores originales de 'Mes yyyy' (para revisar el formato de fecha):")
-        col_fecha = 'Mes yyyy' if 'Mes yyyy' in df_raw2_debug.columns else None
-        if col_fecha:
-            st.write(df_raw2_debug[col_fecha].head(10).tolist())
+    st.expander("🔍 DEBUG — Validar Fuente 2"):
+    st.write(f"Filas cargadas: {len(df2)}")
+    st.write(f"Columnas: {list(df2.columns)}")
+    st.dataframe(df2, use_container_width=True)
             
 # ==================== SIDEBAR ====================
 filters = render_sidebar(df, fecha_corte)
