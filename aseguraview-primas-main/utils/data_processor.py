@@ -138,7 +138,7 @@ def normalize_dataframe_fuente2(df: pd.DataFrame) -> pd.DataFrame:
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip()
 
-        if 'ANIO' not in df.columns and 'FECHA' in df.columns:
+    if 'ANIO' not in df.columns and 'FECHA' in df.columns:
         df['ANIO'] = df['FECHA'].dt.year
     
     df['FUENTE'] = 'fuente2'
