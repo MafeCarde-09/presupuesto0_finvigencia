@@ -16,6 +16,31 @@ def parse_number_co(series: pd.Series) -> pd.Series:
     s = s.str.replace(".", "", regex=False).str.replace(",", ".", regex=False)
     return pd.to_numeric(s, errors="coerce")
 
+# ==================== MESES EN ESPAÑOL ====================
+MESES_ES = {
+    'enero': 1, 'febrero': 2, 'marzo': 3, 'abril': 4,
+    'mayo': 5, 'junio': 6, 'julio': 7, 'agosto': 8,
+    'septiembre': 9, 'setiembre': 9, 'octubre': 10,
+    'noviembre': 11, 'diciembre': 12,
+}
+
+
+def parse_mes_yyyy_es(serie: pd.Series) -> pd.Series:
+    """Convierte texto 'AAAA mes_español' (ej. '1900 enero') -> Timestamp(dia=1)."""
+    def _parse_one(valor):
+        if pd.isna(valor):
+            return pd.NaT
+        texto = str(valor).strip().lower()
+        match = re.match(r'(\d{4})\s+([a-záéíóúñ]+)', texto)
+        if not match:
+            return pd.NaT
+        anio_str, mes_str = match.groups()
+        mes_num = MESES_ES.get(mes_str)
+        if mes_num is None:
+            return pd.NaT
+        return pd.Timestamp(year=int(anio_str), month=mes_num, day=1)
+    return serie.apply(_parse_one)
+
 
 def parse_dates(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -29,6 +54,12 @@ def parse_dates(df: pd.DataFrame) -> pd.DataFrame:
             dayfirst=DATE_PARSE_DAYFIRST,
             errors='coerce'
         )
+
+        # Fallback: para lo que no se pudo convertir, reintentar como "AAAA mes_español"
+        faltantes = df['FECHA'].isna() & df['MES_TXT'].notna()
+        if faltantes.any():
+            df.loc[faltantes, 'FECHA'] = parse_mes_yyyy_es(df.loc[faltantes, 'MES_TXT'])
+
     elif 'ANIO' in df.columns and 'MES' in df.columns:
         try:
             df['FECHA'] = pd.to_datetime(
@@ -55,7 +86,6 @@ def parse_dates(df: pd.DataFrame) -> pd.DataFrame:
     )
     
     return df
-
 
 def normalize_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """
