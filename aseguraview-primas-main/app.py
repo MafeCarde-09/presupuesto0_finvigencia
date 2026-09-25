@@ -1159,31 +1159,21 @@ st.markdown(f"""
 st.caption("Nowcast, cierre estimado del año, ejecución vs presupuesto")
 
 ###BORRAR
-with st.expander("🔍 DEBUG — Validar Fuente 2 (borrar después)"):
-    st.write(f"Filas cargadas: {len(df2)}")
-    st.write(f"Columnas: {list(df2.columns)}")
-    st.write("Tipos de dato:")
-    st.write(df2.dtypes)
-    st.write("Primeras filas:")
-    st.dataframe(df2.head(10))
-    st.write("Rango de fechas:")
-    if not df2.empty and 'FECHA' in df2.columns:
-        st.write(f"Desde {df2['FECHA'].min()} hasta {df2['FECHA'].max()}")
-    st.write(f"Suma total IMP_PRIMA: {df2['IMP_PRIMA'].sum() if 'IMP_PRIMA' in df2.columns else 'columna no existe'}")
+with st.expander("🔍 DEBUG — Validar Fuente 2 (por etapas)"):
+    df_raw2_debug = load_data_fuente2()
+    st.write("### 1) Datos CRUDOS (antes de normalizar)")
+    st.write(f"Filas: {len(df_raw2_debug)}")
+    st.write(f"Columnas: {list(df_raw2_debug.columns)}")
+    st.dataframe(df_raw2_debug.head(5))
 
-###BORRAR
-with st.expander("🔍 DEBUG — Validar Fuente 1 (borrar después)"):
-    st.write(f"Filas cargadas: {len(df)}")
-    st.write(f"Columnas: {list(df.columns)}")
-    st.write("Tipos de dato:")
-    st.write(df.dtypes)
-    st.write("Primeras filas:")
-    st.dataframe(df.head(10))
-    st.write("Rango de fechas:")
-    if not df.empty and 'FECHA' in df.columns:
-        st.write(f"Desde {df['FECHA'].min()} hasta {df['FECHA'].max()}")
-    st.write(f"Suma total IMP_PRIMA: {df['IMP_PRIMA'].sum() if 'IMP_PRIMA' in df.columns else 'columna no existe'}")
-    
+    st.write("### 2) Datos NORMALIZADOS (df2)")
+    st.write(f"Filas: {len(df2)}")
+    if not df_raw2_debug.empty:
+        st.write("Valores originales de 'Mes yyyy' (para revisar el formato de fecha):")
+        col_fecha = 'Mes yyyy' if 'Mes yyyy' in df_raw2_debug.columns else None
+        if col_fecha:
+            st.write(df_raw2_debug[col_fecha].head(10).tolist())
+            
 # ==================== SIDEBAR ====================
 filters = render_sidebar(df, fecha_corte)
 
