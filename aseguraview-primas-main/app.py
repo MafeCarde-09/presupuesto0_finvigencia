@@ -17,6 +17,7 @@ from io import BytesIO
 from openpyxl.formatting.rule import CellIsRule
 from openpyxl.styles import PatternFill
 from openpyxl.utils import get_column_letter
+from componentes.charts import chart_produccion_lineas
 
 try:
     import plotly.graph_objects as go
@@ -1390,6 +1391,9 @@ with tabs[1]:
     
     with st.spinner("Generando pronóstico..."):
         hist_df, fc_df, smape, accuracy_df = engine.fit_forecast(serie_train, steps=steps)
+
+    st.subheader("📈 Producción — Fuente 1 vs Fuente 2")
+    st.plotly_chart(chart_produccion_lineas(df_filtered, df2), use_container_width=True)
     
     # Crear tabla de resumen
     resumen_lineas = []
