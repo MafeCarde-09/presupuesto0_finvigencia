@@ -4,6 +4,7 @@ Componente para gráficos Plotly
 """
 import pandas as pd
 from typing import TYPE_CHECKING, Any
+import plotly.graph_objects as go
 
 if TYPE_CHECKING:
     import plotly.graph_objects as go
@@ -140,4 +141,38 @@ def render_forecast_chart(hist_df: pd.DataFrame,
         template="plotly_dark"
     )
 
+    return fig
+
+"""
+Gráficos comparativos entre Fuente 1 (fecha de vigencia) y Fuente 2 (fecha de emisión)
+"""
+def chart_produccion_lineas(df_filtrado: pd.DataFrame, df2: pd.DataFrame):
+    """
+    Gráfico de líneas: Producción (Imp Prima) por mes.
+    - Fuente 1: fecha de vigencia, ya filtrada por Línea+ / Código / Sucursal (sidebar).
+    - Fuente 2: fecha de emisión, sin filtros por ahora.
+    """
+    fig = go.Figure()
+
+    if not df_filtrado.empty and 'FECHA' in df_filtrado.columns:
+        serie1 = df_filtrado.groupby('FECHA', as_index=False)['IMP_PRIMA'].sum()
+        fig.add_trace(go.Scatter(
+            x=serie1['FECHA'], y=serie1['IMP_PRIMA'],
+            mode='lines+markers', name='Fuente 1 · Fecha de vigencia'
+        ))
+
+    if not df2.empty and 'FECHA' in df2.columns:
+        serie2 = df2.groupby('FECHA', as_index=False)['IMP_PRIMA'].sum()
+        fig.add_trace(go.Scatter(
+            x=serie2['FECHA'], y=serie2['IMP_PRIMA'],
+            mode='lines+markers', name='Fuente 2 · Fecha de emisión'
+        ))
+
+    fig.update_layout(
+        title="Producción — Imp Prima por mes (Fuente 1 vs Fuente 2)",
+        xaxis_title="Mes",
+        yaxis_title="Imp Prima",
+        legend_title="Fuente",
+        hovermode="x unified"
+    )
     return fig
